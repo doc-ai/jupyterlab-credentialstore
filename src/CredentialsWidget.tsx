@@ -9,7 +9,7 @@ import {
 
 import { Message } from '@phosphor/messaging';
 import { ServiceManager } from '@jupyterlab/services';
-import { ClientSession, IClientSession } from '@jupyterlab/apputils';
+import { SessionContext, ISessionContext } from '@jupyterlab/apputils';
 import { Kernel, KernelMessage } from '@jupyterlab/services';
 
 import * as React from 'react';
@@ -228,7 +228,7 @@ export class CredentialsWidget extends Widget {
     private unencrypted_token: string;
     
     private serviceManager: ServiceManager;
-    private clientSession: ClientSession;
+    private clientSession: SessionContext;
     private mainpath: string;
     
     constructor(options: CredentialsWidget.IOptions) {
@@ -267,7 +267,7 @@ export class CredentialsWidget extends Widget {
         
         this.removeCredential = this.removeCredential.bind(this);
         
-        this.clientSession = new ClientSession({
+        this.clientSession = new SessionContext({
                 manager: this.serviceManager.sessions,
                 kernelPreference: {
                     name: "python3",
@@ -408,7 +408,7 @@ def get_credential(tag):
         //console.log("login");
         
          
-            this.clientSession = new ClientSession({
+            this.clientSession = new SessionContext({
                 manager: this.serviceManager.sessions,
                 kernelPreference: {
                     name: "python3",
