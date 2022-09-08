@@ -97,7 +97,7 @@ const pyWriteFile = (session, token, lastId, credentials, onStoredCredentials, s
     }) : credentials;
     
     if (session !== undefined) {
-        let kernel_id = session.kernel.id;
+        let kernel_id = session._session.kernel.id;
 
         let code = `
 import pickle, os, json
@@ -169,7 +169,7 @@ with open(PATH, 'w') as f:
             user_expressions: userExpressions
         };
         
-        let future = session.kernel.requestExecute(content, false, {});
+        let future = session._session.kernel.requestExecute(content, false, {});
             
         
         future.done.then(msg => {
@@ -494,7 +494,7 @@ def get_credential(tag):
             future.done.then(msg => {
                 //console.log(msg);
             });
-        };
+        }
     }
     
     
