@@ -1,7 +1,7 @@
 
 import {
     PanelLayout, Widget
-} from '@phosphor/widgets';
+} from '@lumino/widgets';
 
 import { 
     Toolbar, ToolbarButton 
@@ -16,7 +16,7 @@ const CLASS_NAME = 'jp-FileBrowser';
 export class CredentialsPanel extends Widget {
     
     private div: HTMLElement;
-    private toolbar: Toolbar<Widget>;
+    private toolbar: Toolbar<Widget>
     readonly serviceManager: ServiceManager;
     readonly id: string;
     public onAddCredential: () => void;
@@ -32,11 +32,11 @@ export class CredentialsPanel extends Widget {
         
         this.addClass(CLASS_NAME);
         
-        this.toolbar = new Toolbar<Widget>();
+        this.toolbar = new Toolbar();
         
         this.setSaveListener = this.setSaveListener.bind(this);
         let saveButton = new ToolbarButton({
-            iconClassName: 'jp-SaveIcon jp-Icon jp-Icon-16',
+            iconClass: 'jp-SaveIcon jp-Icon jp-Icon-16',
             tooltip: 'Save',
             onClick: () => this.onSave()
         });
@@ -45,7 +45,7 @@ export class CredentialsPanel extends Widget {
         
         this.setAddCredentialListener = this.setAddCredentialListener.bind(this);
         let newCredential = new ToolbarButton({
-            iconClassName: 'jp-AddIcon jp-Icon jp-Icon-16',
+            iconClass: 'jp-AddIcon jp-Icon jp-Icon-16',
             tooltip: 'New Credential',
             onClick: () => this.onAddCredential()
         });
@@ -54,12 +54,12 @@ export class CredentialsPanel extends Widget {
         
         this.setLoginListener = this.setLoginListener.bind(this);
         let loginButton = new ToolbarButton({
-            iconClassName: 'jp-KeyIcon jp-Icon jp-Icon-16',
+            iconClass: 'jp-KeyIcon jp-Icon jp-Icon-16',
             tooltip: 'Login',
             onClick: () => {
                 this.onLogin();
                 this.layout.removeWidget(this.toolbar);
-                this.toolbar = new Toolbar<Widget>();
+                this.toolbar = new Toolbar();
                 this.toolbar.addItem('stopButton', stopButton);
                 this.toolbar.addItem('newCredential', newCredential);
                 this.toolbar.addItem('saveButton', saveButton);
@@ -70,7 +70,7 @@ export class CredentialsPanel extends Widget {
         
         this.setStopListener = this.setStopListener.bind(this);
         let stopButton = new ToolbarButton({
-            iconClassName: 'jp-StopIcon jp-Icon jp-Icon-16',
+            iconClass: 'jp-StopIcon jp-Icon jp-Icon-16',
             tooltip: 'Stop',
             onClick: () => {
                 this.onStop();

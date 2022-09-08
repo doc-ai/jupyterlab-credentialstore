@@ -40,18 +40,18 @@ export function setLastId(lastId) {
 
 // the variable name must match the name of the reducer!!!
 // returns the dict that contains the data of this reducer
-export const getCredentialsRoot = createSelector(
+export const getCredentialsRoot: any = createSelector(
   getRoot,
-  ({ credentialsReducer }) => credentialsReducer
+    ({ credentialsReducer }) => credentialsReducer
 )
 
 
-export const getCredentials = createSelector(
+export const getCredentials: any = createSelector(
     getCredentialsRoot,
     ({ credentials }) => credentials
 )
 
-export const getLastId = createSelector(
+export const getLastId: any = createSelector(
     getCredentialsRoot,
     ({ lastId }) => lastId
 )

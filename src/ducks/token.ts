@@ -26,24 +26,24 @@ export function setTokenB(token) {
 
 // the variable name must match the name of the reducer!!!
 // returns the dict that contains the data of this reducer
-export const getTokenRoot = createSelector(
+export const getTokenRoot: any = createSelector(
   getRoot,
   ({ tokenReducer }) => tokenReducer
 )
 
-export const getActiveToken = createSelector(
+export const getActiveToken: any = createSelector(
     getTokenRoot,
     ({ activeToken }) => {
         return activeToken.length > 0 ? activeToken : undefined;
     }
 )
 
-export const getTokenA = createSelector(
+export const getTokenA: any = createSelector(
     getTokenRoot,
     ({ tokenA }) => tokenA
 )
 
-export const getTokenB = createSelector(
+export const getTokenB: any = createSelector(
     getTokenRoot,
     ({ tokenB }) => tokenB
 )

@@ -36,7 +36,7 @@ interface ArgProps {
 type Props = StateProps & DispatchProps & ArgProps
 
 
-const PasswordSelector: React.SFC<Props> = (props) => {
+const PasswordSelector: React.FC<Props> = (props) => {
     
     //console.log("PasswordSelector");
     //console.log(props.argToken);
@@ -120,7 +120,7 @@ const PasswordSelector: React.SFC<Props> = (props) => {
       
 }
 
-function mapStateToProps(state: any, props: Props): StateProps {
+function mapStateToProps(state: any, ownProps: ArgProps): StateProps {
     return {
         tokenA: getTokenA(state),
         tokenB: getTokenB(state),
@@ -128,7 +128,7 @@ function mapStateToProps(state: any, props: Props): StateProps {
     }
 }
  
-function mapDispatchToProps(dispatch: Redux.Dispatch<any>, props: Props): DispatchProps {
+function mapDispatchToProps(dispatch: Redux.Dispatch<any>, ownProps: ArgProps): DispatchProps {
     return {
         setTokenA: (token: string) => {
             dispatch(setTokenA(token))

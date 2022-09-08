@@ -5,7 +5,7 @@ var CryptoJS = require("crypto-js");
 
 import {
     Widget
-} from '@phosphor/widgets';
+} from '@lumino/widgets';
 
 import { Message } from '@phosphor/messaging';
 import { ServiceManager } from '@jupyterlab/services';
@@ -228,7 +228,7 @@ export class CredentialsWidget extends Widget {
     private unencrypted_token: string;
     
     private serviceManager: ServiceManager;
-    private clientSession: SessionContext;
+    private clientSession: ISessionContext;
     private mainpath: string;
     
     constructor(options: CredentialsWidget.IOptions) {
@@ -268,7 +268,8 @@ export class CredentialsWidget extends Widget {
         this.removeCredential = this.removeCredential.bind(this);
         
         this.clientSession = new SessionContext({
-                manager: this.serviceManager.sessions,
+            sessionManager: this.serviceManager.sessions,
+            specsManager: this.serviceManager.kernelspecs,
                 kernelPreference: {
                     name: "python3",
                     shouldStart: true,
@@ -278,7 +279,7 @@ export class CredentialsWidget extends Widget {
         });
 
         this.clientSession.initialize().then(() => {
-            let kernel_id = this.clientSession.kernel.id;
+            let kernel_id = this.clientSession.session.kernel.id;
             let code = `import os, sys
 from pathlib import Path
 from sys import path
@@ -348,7 +349,7 @@ def get_credential(tag):
                 user_expressions: userExpressions
             };
 
-            let future = this.clientSession.kernel.requestExecute(content, false, {});
+            let future = this.clientSession.session.kernel.requestExecute(content, false, {});
             
         
             future.done.then(msg => {
@@ -409,7 +410,8 @@ def get_credential(tag):
         
          
             this.clientSession = new SessionContext({
-                manager: this.serviceManager.sessions,
+                sessionManager: this.serviceManager.sessions,
+                specsManager: this.serviceManager.kernelspecs,
                 kernelPreference: {
                     name: "python3",
                     shouldStart: true,
@@ -480,7 +482,7 @@ def get_credential(tag):
         //console.log("remove: "+tag);
     
         if (this.clientSession !== undefined) {
-            let kernel_id = this.clientSession.kernel.id;
+            let kernel_id = this.clientSession.session.kernel.id;
             let code = `exec("%s = None" % ("`+tag+`"))`;
             //console.log(code);
             let content: KernelMessage.IExecuteRequestMsg['content'] = {
@@ -488,7 +490,7 @@ def get_credential(tag):
                 stop_on_error: true
             };
 
-            let future = this.clientSession.kernel.requestExecute(content, false, {});
+            let future = this.clientSession.session.kernel.requestExecute(content, false, {});
             future.done.then(msg => {
                 //console.log(msg);
             });
@@ -509,7 +511,7 @@ def get_credential(tag):
                 <div id="overlay" >
                     <div className="loader"></div>
                 </div>
-                <CredentialsList className="jp-CredentialsStore"
+                <CredentialsList
                         argtoken={this.token}
                         isConnected={this.clientSession !== undefined}
                         setAddCredentialListener={this.setAddCredentialListener}

@@ -60,7 +60,7 @@ interface ArgProps {
 type Props = StateProps & DispatchProps & ArgProps
 
 
-const CredentialsList: React.SFC<Props> = (props) => {
+const CredentialsList: React.FC<Props> = (props) => {
     
     
     //console.log(props.credentials);
@@ -96,7 +96,7 @@ const CredentialsList: React.SFC<Props> = (props) => {
     props.setOnStopListener(() => {
         props.setActiveToken("");
     });
-    
+
     //console.log(props.argtoken);
     //console.log(props.token);
     
@@ -143,11 +143,10 @@ const CredentialsList: React.SFC<Props> = (props) => {
     ) : <div className="jp-Frame">
         <h2>Credential Store</h2>
         <p>You need to log in to set and access your credentials. Please click on the key above...</p>
-    </div>
-     
+    </div>;
 }
 
-function mapStateToProps(state: any, props: Props): StateProps {
+function mapStateToProps(state: any, ownProps?: ArgProps): StateProps {
     return {
         credentials: getCredentials(state),
         lastId: getLastId(state),
@@ -155,7 +154,7 @@ function mapStateToProps(state: any, props: Props): StateProps {
     }
 }
  
-function mapDispatchToProps(dispatch: Redux.Dispatch<any>, props?: Props): DispatchProps {
+function mapDispatchToProps(dispatch: Redux.Dispatch<any>, ownProps?: ArgProps): DispatchProps {
     return {
         addCredential: () => {
             dispatch(addCredential());
@@ -171,7 +170,7 @@ function mapDispatchToProps(dispatch: Redux.Dispatch<any>, props?: Props): Dispa
         },
         setActiveToken: (token: string) => {
             dispatch(setActiveToken(token))
-        },
+        }
     }
    
 }
