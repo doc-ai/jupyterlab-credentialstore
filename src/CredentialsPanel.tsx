@@ -16,7 +16,7 @@ const CLASS_NAME = 'jp-FileBrowser';
 export class CredentialsPanel extends Widget {
     
     private div: HTMLElement;
-    private toolbar: Toolbar<Widget>
+    private toolbar: Toolbar<Widget>;
     readonly serviceManager: ServiceManager;
     readonly id: string;
     public onAddCredential: () => void;
@@ -32,7 +32,7 @@ export class CredentialsPanel extends Widget {
         
         this.addClass(CLASS_NAME);
         
-        this.toolbar = new Toolbar();
+        this.toolbar = new Toolbar<Widget>();
         
         this.setSaveListener = this.setSaveListener.bind(this);
         let saveButton = new ToolbarButton({
@@ -59,7 +59,7 @@ export class CredentialsPanel extends Widget {
             onClick: () => {
                 this.onLogin();
                 this.layout.removeWidget(this.toolbar);
-                this.toolbar = new Toolbar();
+                this.toolbar = new Toolbar<Widget>();
                 this.toolbar.addItem('stopButton', stopButton);
                 this.toolbar.addItem('newCredential', newCredential);
                 this.toolbar.addItem('saveButton', saveButton);

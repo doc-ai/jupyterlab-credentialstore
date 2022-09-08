@@ -1,6 +1,8 @@
 // https://reactjs.org/docs/react-without-es6.html
 // https://levelup.gitconnected.com/ultimate-react-component-patterns-with-typescript-2-8-82990c516935
 
+import {Action} from "redux";
+
 declare var require: any
 var CryptoJS = require("crypto-js");
 
@@ -154,7 +156,7 @@ function mapStateToProps(state: any, ownProps?: ArgProps): StateProps {
     }
 }
  
-function mapDispatchToProps(dispatch: Redux.Dispatch<any>, ownProps?: ArgProps): DispatchProps {
+function mapDispatchToProps(dispatch: Redux.Dispatch<Action<any>>, ownProps?: ArgProps): DispatchProps {
     return {
         addCredential: () => {
             dispatch(addCredential());

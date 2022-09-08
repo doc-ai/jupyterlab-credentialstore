@@ -1,3 +1,5 @@
+import {Action} from "redux";
+
 declare var require: any
 var CryptoJS = require("crypto-js");
 
@@ -128,7 +130,7 @@ function mapStateToProps(state: any, ownProps: ArgProps): StateProps {
     }
 }
  
-function mapDispatchToProps(dispatch: Redux.Dispatch<any>, ownProps: ArgProps): DispatchProps {
+function mapDispatchToProps(dispatch: Redux.Dispatch<Action<any>>, ownProps: ArgProps): DispatchProps {
     return {
         setTokenA: (token: string) => {
             dispatch(setTokenA(token))

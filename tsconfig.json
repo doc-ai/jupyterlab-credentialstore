@@ -13,7 +13,8 @@
     "outDir": "./lib",
     "strict": true,
     "strictNullChecks": false,
-    "types": []
+    "types": [],
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/*"]
 }
