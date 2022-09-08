@@ -29,6 +29,7 @@ Install the **JupyterLab Credential Store**:
 
 ```bash
 pip install pycrypto
+(env "CFLAGS=-I/usr/local/include -L/usr/local/lib" pip install pycrypto on MacOS)
 apt-get install nodejs -y
 apt-get install npm -y
 jupyter labextension install @docai/jupyterlab_credentialstore (need Sharecare NPM repo creds) OR
