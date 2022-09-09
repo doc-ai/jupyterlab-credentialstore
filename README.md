@@ -51,7 +51,7 @@ MacOS:
   env "CFLAGS=-I/usr/local/include -L/usr/local/lib" pip install pycrypto
 
 # Install this extension
-npm config set registry https://nexus.admin.sharecare.com/repository/npm-internal/
+npm config set registry https://nexus.admin.sharecare.com/repository/npm-repo/
 npm login (interactive - enter Nexus username and password)
 jupyter labextension install @docai/credentialstore 
 
