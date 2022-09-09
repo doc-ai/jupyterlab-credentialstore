@@ -51,7 +51,12 @@ MacOS:
   env "CFLAGS=-I/usr/local/include -L/usr/local/lib" pip install pycrypto
 
 # Install this extension
-jupyter labextension install @docai/credentialstore (need Sharecare NPM repo creds) OR
+npm config set registry https://nexus.admin.sharecare.com/repository/npm-internal/
+npm login (interactive - enter Nexus username and password)
+jupyter labextension install @docai/credentialstore 
+
+OR
+
 git clone git@github.com:doc-ai/jupyterlab-credentialstore.git
 jupyter labextension install jupyterlab-credentialstore
 
