@@ -1,6 +1,6 @@
 {
   "name": "@docai/credentialstore",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A secure credential store for JupyterLab forked from @lean-data-science",
   "keywords": [
     "jupyter",
@@ -34,16 +34,6 @@
   "dependencies": {
     "@jupyterlab/application": "^3.4.6",
     "@jupyterlab/apputils": "^3.4.6",
-    "@jupyterlab/codemirror": "^3.4.6",
-    "@jupyterlab/completer": "^3.4.6",
-    "@jupyterlab/coreutils": "^5.4.6",
-    "@jupyterlab/docregistry": "^3.4.6",
-    "@jupyterlab/filebrowser": "^3.4.6",
-    "@jupyterlab/launcher": "^3.4.6",
-    "@jupyterlab/mainmenu": "^3.4.6",
-    "@jupyterlab/notebook": "^3.4.6",
-    "@jupyterlab/rendermime": "^3.4.6",
-    "@jupyterlab/rendermime-interfaces": "^3.4.6",
     "crypto-js": "^4.1.1",
     "react-redux": "^7.2.8",
     "redux": "^4.0.0",
