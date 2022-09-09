@@ -1,15 +1,15 @@
 import {Action} from "redux";
 
 declare var require: any
-var CryptoJS = require("crypto-js");
+let CryptoJS = require("crypto-js");
 
 import * as React from 'react';
 import * as Redux from 'redux'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 
 import '../style/index.css';
 
-import { 
+import {
     setTokenA,
     setTokenB,
     getTokenA,
@@ -23,8 +23,8 @@ interface StateProps {
     tokenB: string,
     activeToken: string
 }
-     
-interface DispatchProps { 
+
+interface DispatchProps {
     setTokenA: (token: string) => void,
     setTokenB: (token: string) => void,
     setActiveToken: (token: string) => void
@@ -34,28 +34,29 @@ interface ArgProps {
     onTokenSet: (token: string) => void
     argToken: string
 }
- 
+
 type Props = StateProps & DispatchProps & ArgProps
 
 
 const PasswordSelector: React.FC<Props> = (props) => {
-    
+
     //console.log("PasswordSelector");
     //console.log(props.argToken);
-    
+
     return props.argToken === undefined ? <div className="jp-Frame">
         <h2>Set a password</h2>
-        <table className="jp-PasswordTable"><tbody>
+        <table className="jp-PasswordTable">
+            <tbody>
             <tr>
                 <td className="jp-LimitedColumn">Enter password:</td>
-                <td >
+                <td>
                     <input className="jp-Input"
-                        type="password"
-                        onChange={(event) => {
-                            props.setTokenA(CryptoJS.SHA256(
-                                event.target.value
-                            ));
-                        }}
+                           type="password"
+                           onChange={(event) => {
+                               props.setTokenA(CryptoJS.SHA256(
+                                   event.target.value
+                               ));
+                           }}
                     />
                 </td>
             </tr>
@@ -63,10 +64,10 @@ const PasswordSelector: React.FC<Props> = (props) => {
                 <td>Repeat password:</td>
                 <td>
                     <input className="jp-Input"
-                        type="password"
-                        onChange={(event) => {
-                            props.setTokenB(CryptoJS.SHA256(event.target.value));
-                        }}
+                           type="password"
+                           onChange={(event) => {
+                               props.setTokenB(CryptoJS.SHA256(event.target.value));
+                           }}
                     />
                 </td>
             </tr>
@@ -78,26 +79,29 @@ const PasswordSelector: React.FC<Props> = (props) => {
                             props.setActiveToken(props.tokenA.toString());
                             props.onTokenSet(props.tokenA.toString());
                         }
-                    }}>Save password</button>
+                    }}>Save password
+                    </button>
                 </td>
             </tr>
-        </tbody></table>
-        
+            </tbody>
+        </table>
+
     </div> : <div className="jp-Frame">
         <h2>Login</h2>
-        <table className="jp-PasswordTable"><tbody>
+        <table className="jp-PasswordTable">
+            <tbody>
             <tr>
                 <td colSpan={2}>Enter your password:</td>
             </tr>
             <tr>
-                <td  className="jp-LimitedColumn">
+                <td className="jp-LimitedColumn">
                     <input className="jp-Input"
-                        type="password"
-                        onChange={(event) => {
-                            props.setTokenA(CryptoJS.SHA256(
-                                event.target.value
-                            ));
-                        }}
+                           type="password"
+                           onChange={(event) => {
+                               props.setTokenA(CryptoJS.SHA256(
+                                   event.target.value
+                               ));
+                           }}
                     />
                 </td>
                 <td className="jp-Cell">
@@ -105,21 +109,23 @@ const PasswordSelector: React.FC<Props> = (props) => {
                         props.setActiveToken(props.tokenA.toString());
                         props.onTokenSet(props.tokenA.toString());
 
-                    }}>Login</button>
+                    }}>Login
+                    </button>
                 </td>
             </tr>
-            { 
-                (props.activeToken !== undefined && 
-                     props.activeToken.toString().length > 0) ?
+            {
+                (props.activeToken !== undefined &&
+                    props.activeToken.toString().length > 0) ?
                     <tr>
-                        <td colSpan= {2}>Password wrong</td>
+                        <td colSpan={2}>Password wrong</td>
                     </tr> : <tr></tr>
             }
-        </tbody></table>
-        
-        
+            </tbody>
+        </table>
+
+
     </div>
-      
+
 }
 
 function mapStateToProps(state: any, ownProps: ArgProps): StateProps {
@@ -129,7 +135,7 @@ function mapStateToProps(state: any, ownProps: ArgProps): StateProps {
         activeToken: getActiveToken(state)
     }
 }
- 
+
 function mapDispatchToProps(dispatch: Redux.Dispatch<Action<any>>, ownProps: ArgProps): DispatchProps {
     return {
         setTokenA: (token: string) => {
@@ -142,8 +148,8 @@ function mapDispatchToProps(dispatch: Redux.Dispatch<Action<any>>, ownProps: Arg
             dispatch(setActiveToken(token))
         },
     }
-   
+
 }
-  
+
 export default connect<StateProps, DispatchProps, ArgProps>
-  (mapStateToProps, mapDispatchToProps)(PasswordSelector)
+(mapStateToProps, mapDispatchToProps)(PasswordSelector)

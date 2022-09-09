@@ -1,3 +1,3 @@
 export function getRoot(state) {
-  return state;
+    return state;
 }

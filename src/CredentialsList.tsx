@@ -4,20 +4,20 @@
 import {Action} from "redux";
 
 declare var require: any
-var CryptoJS = require("crypto-js");
+let CryptoJS = require("crypto-js");
 
 
 import * as React from 'react';
 import * as Redux from 'redux'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 
 import '../style/index.css';
 
 import PasswordSelector from './PasswordSelector'
 
-import { 
-    ICredential, 
-    getCredentials, 
+import {
+    ICredential,
+    getCredentials,
     addCredential,
     removeCredential,
     setCredential,
@@ -25,7 +25,7 @@ import {
     setLastId
 } from './ducks/credentials'
 
-import { 
+import {
     getActiveToken,
     setActiveToken
 } from './ducks/token'
@@ -36,8 +36,8 @@ interface StateProps {
     lastId: number,
     token?: string
 }
-     
-interface DispatchProps { 
+
+interface DispatchProps {
     addCredential: () => void,
     removeCredential: (id: string) => void,
     setCredential: (id: string, tag: string, value: string, changed: boolean) => void,
@@ -58,15 +58,15 @@ interface ArgProps {
     setOnStopListener: (listener: () => void) => void;
     onRemoveCredential: (tag: string) => void;
 }
- 
+
 type Props = StateProps & DispatchProps & ArgProps
 
 
 const CredentialsList: React.FC<Props> = (props) => {
-    
-    
+
+
     //console.log(props.credentials);
-    
+
     props.setAddCredentialListener(props.addCredential);
     props.setCredentialListGetter(() => props.credentials);
     props.setSetCredentialsListener((credentials: Array<ICredential>) => {
@@ -80,13 +80,13 @@ const CredentialsList: React.FC<Props> = (props) => {
             );
         }
     });
-    
+
     props.setSetLastIdListener((lastId: number) => {
         if (lastId !== undefined)
             props.setLastId(lastId)
     });
-    props.setLastIdGetter(()=> props.lastId);
-    
+    props.setLastIdGetter(() => props.lastId);
+
     props.setOnSavedListener(() => {
         for (let key in Object.keys(props.credentials)) {
             let credential = props.credentials[key];
@@ -94,54 +94,60 @@ const CredentialsList: React.FC<Props> = (props) => {
             props.setCredential(credential.id, credential.tag, credential.value, false)
         }
     });
-    
+
     props.setOnStopListener(() => {
         props.setActiveToken("");
     });
 
     //console.log(props.argtoken);
     //console.log(props.token);
-    
-    return props.isConnected ? (props.argtoken !== undefined && props.argtoken === props.token ? <table className="jp-CredentialsTable"><tbody>
-        <tr>
-            <th></th>
-            <th>Key</th>
-            <th>Value</th>
-            <th className="jp-Column"></th>
-        </tr>{
-            props.credentials.map(credential => <tr>
-                    <td className="jp-StarColumn">{credential.changed ? "*" : ""}</td>
-                    <td className="jp-Cell">
-                        <input 
-                            className={ "jp-Input" }
-                            type="text"
-                            value={credential.tag !== undefined ? credential.tag : ""}
-                            onChange={(event) => props.setCredential(
-                                credential.id,
-                                event.target.value,
-                                credential.value,
-                                true
-                            )}
+
+    return props.isConnected ? (props.argtoken !== undefined && props.argtoken === props.token ?
+            <table className="jp-CredentialsTable">
+                <tbody>
+                <tr>
+                    <th></th>
+                    <th>Key</th>
+                    <th>Value</th>
+                    <th className="jp-Column"></th>
+                </tr>
+                {
+                    props.credentials.map(credential => <tr>
+                        <td className="jp-StarColumn">{credential.changed ? "*" : ""}</td>
+                        <td className="jp-Cell">
+                            <input
+                                className={"jp-Input"}
+                                type="text"
+                                value={credential.tag !== undefined ? credential.tag : ""}
+                                onChange={(event) => props.setCredential(
+                                    credential.id,
+                                    event.target.value,
+                                    credential.value,
+                                    true
+                                )}
+                            /></td>
+                        <td className="jp-Cell"><input className="jp-Input"
+                                                       type="text"
+                                                       value={credential.value !== undefined ? credential.value : ""}
+                                                       onChange={(event) => props.setCredential(
+                                                           credential.id,
+                                                           credential.tag,
+                                                           event.target.value,
+                                                           true
+                                                       )}
                         /></td>
-                    <td className="jp-Cell"><input className="jp-Input"
-                            type="text"
-                            value={credential.value !== undefined ? credential.value : ""}
-                            onChange={(event) => props.setCredential(
-                                credential.id,
-                                credential.tag,
-                                event.target.value,
-                                true
-                            )}
-                        /></td>
-                <td className="jp-Column">
-                    <button className="jp-Button"
-                        onClick={() => {
-                            props.removeCredential(credential.id);
-                            props.onRemoveCredential(credential.tag);
-                        }}
-                    >Delete</button></td>
-                </tr>)
-        } </tbody></table> : <PasswordSelector argToken={props.argtoken} onTokenSet={props.onTokenSet} />
+                        <td className="jp-Column">
+                            <button className="jp-Button"
+                                    onClick={() => {
+                                        props.removeCredential(credential.id);
+                                        props.onRemoveCredential(credential.tag);
+                                    }}
+                            >Delete
+                            </button>
+                        </td>
+                    </tr>)
+                } </tbody>
+            </table> : <PasswordSelector argToken={props.argtoken} onTokenSet={props.onTokenSet}/>
     ) : <div className="jp-Frame">
         <h2>Credential Store</h2>
         <p>You need to log in to set and access your credentials. Please click on the key above...</p>
@@ -155,7 +161,7 @@ function mapStateToProps(state: any, ownProps?: ArgProps): StateProps {
         token: CryptoJS.SHA256(getActiveToken(state)).toString(),
     }
 }
- 
+
 function mapDispatchToProps(dispatch: Redux.Dispatch<Action<any>>, ownProps?: ArgProps): DispatchProps {
     return {
         addCredential: () => {
@@ -174,8 +180,8 @@ function mapDispatchToProps(dispatch: Redux.Dispatch<Action<any>>, ownProps?: Ar
             dispatch(setActiveToken(token))
         }
     }
-   
+
 }
-  
+
 export default connect<StateProps, DispatchProps, ArgProps>
-  (mapStateToProps, mapDispatchToProps)(CredentialsList)
+(mapStateToProps, mapDispatchToProps)(CredentialsList)

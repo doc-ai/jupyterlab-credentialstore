@@ -1,6 +1,5 @@
-
-import { getRoot } from './rootselector'
-import { createSelector } from 'reselect'
+import {getRoot} from './rootselector'
+import {createSelector} from 'reselect'
 
 // Actions
 export function setActiveToken(token) {
@@ -27,28 +26,26 @@ export function setTokenB(token) {
 // the variable name must match the name of the reducer!!!
 // returns the dict that contains the data of this reducer
 export const getTokenRoot: any = createSelector(
-  getRoot,
-  ({ tokenReducer }) => tokenReducer
+    getRoot,
+    ({tokenReducer}) => tokenReducer
 )
 
 export const getActiveToken: any = createSelector(
     getTokenRoot,
-    ({ activeToken }) => {
+    ({activeToken}) => {
         return activeToken.length > 0 ? activeToken : undefined;
     }
 )
 
 export const getTokenA: any = createSelector(
     getTokenRoot,
-    ({ tokenA }) => tokenA
+    ({tokenA}) => tokenA
 )
 
 export const getTokenB: any = createSelector(
     getTokenRoot,
-    ({ tokenB }) => tokenB
+    ({tokenB}) => tokenB
 )
-
-
 
 
 // Reducer
@@ -58,20 +55,20 @@ const defaultState = {
     activeToken: ""
 }
 
-export default function tokenReducer(state = defaultState, { type, payload }) {
-    
+export default function tokenReducer(state = defaultState, {type, payload}) {
+
     switch (type) {
-            
+
         case 'tokenA/set':
             return {...state, tokenA: payload}
-            
+
         case 'tokenB/set':
             return {...state, tokenB: payload}
-            
+
         case 'activeToken/set':
             return {...state, activeToken: payload}
-            
+
         default:
-          return state
-      }
+            return state
+    }
 }
