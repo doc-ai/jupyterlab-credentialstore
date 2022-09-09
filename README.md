@@ -28,13 +28,35 @@ kc.get_credential("my_secret")
 Install the **JupyterLab Credential Store**:
 
 ```bash
-pip install pycrypto
-(env "CFLAGS=-I/usr/local/include -L/usr/local/lib" pip install pycrypto on MacOS)
-apt-get install nodejs -y
-apt-get install npm -y
-jupyter labextension install @docai/jupyterlab_credentialstore (need Sharecare NPM repo creds) OR
+# Install OS dependencies
+Linux:
+  apt-get install nodejs -y
+  apt-get install npm -y
+MacOS:
+  brew install nodejs npm
+  
+# Make a python 3.9 virtual environment
+python3 -m venv venv39
+
+# Activate the venv
+source venv39/bin/activate
+
+# Install Jupyter
+pip install jupyterlab
+
+# Install dependency for credentialstore
+Linux:
+  pip install pycrypto
+MacOS:
+  (env "CFLAGS=-I/usr/local/include -L/usr/local/lib" pip install pycrypto on MacOS)
+
+# Install this extension
+jupyter labextension install @docai/credentialstore (need Sharecare NPM repo creds) OR
 git clone git@github.com:doc-ai/jupyterlab-credentialstore.git
 jupyter labextension install jupyterlab-credentialstore
+
+# Fire up Jupyter
+jupyter-lab
 ```
 
 If you prefer a containerized configuration, the **JupyterLab Credential Store** seamlessly integrates with the [JupyterLab-Configurator](https://lean-data-science.com/#/configure-jupyterlab) (presented [here](https://towardsdatascience.com/how-to-setup-your-jupyterlab-project-environment-74909dade29b)) that lets you easily create your **JupyterLab configuration**. 
