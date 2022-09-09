@@ -48,7 +48,7 @@ pip install jupyterlab
 Linux:
   pip install pycrypto
 MacOS:
-  (env "CFLAGS=-I/usr/local/include -L/usr/local/lib" pip install pycrypto on MacOS)
+  env "CFLAGS=-I/usr/local/include -L/usr/local/lib" pip install pycrypto
 
 # Install this extension
 jupyter labextension install @docai/credentialstore (need Sharecare NPM repo creds) OR
