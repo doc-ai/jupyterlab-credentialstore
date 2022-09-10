@@ -107,7 +107,6 @@ export class CredentialsPanel extends Widget {
     setStopListener(onStop: () => void) {
         this.onStop = onStop;
     }
-
 }
 
 // The namespace for the `CredentialsPanel` class statics.
@@ -119,8 +118,6 @@ export namespace CredentialsPanel {
 
         // provides access to service, like sessions
         serviceManager: ServiceManager;
-
-
     }
 }
 

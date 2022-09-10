@@ -64,13 +64,9 @@ type Props = StateProps & DispatchProps & ArgProps
 
 const CredentialsList: React.FC<Props> = (props) => {
 
-
-    //console.log(props.credentials);
-
     props.setAddCredentialListener(props.addCredential);
     props.setCredentialListGetter(() => props.credentials);
     props.setSetCredentialsListener((credentials: Array<ICredential>) => {
-        //console.log(credentials);
         for (let key in Object.keys(credentials)) {
             props.setCredential(
                 credentials[key].id,
@@ -90,17 +86,13 @@ const CredentialsList: React.FC<Props> = (props) => {
     props.setOnSavedListener(() => {
         for (let key in Object.keys(props.credentials)) {
             let credential = props.credentials[key];
-            //console.log(credential);
-            props.setCredential(credential.id, credential.tag, credential.value, false)
+            props.setCredential(credential.id, credential.tag, credential.value, false);
         }
     });
 
     props.setOnStopListener(() => {
         props.setActiveToken("");
     });
-
-    //console.log(props.argtoken);
-    //console.log(props.token);
 
     return props.isConnected ? (props.argtoken !== undefined && props.argtoken === props.token ?
             <table className="jp-CredentialsTable">
@@ -180,7 +172,6 @@ function mapDispatchToProps(dispatch: Redux.Dispatch<Action<any>>, ownProps?: Ar
             dispatch(setActiveToken(token))
         }
     }
-
 }
 
 export default connect<StateProps, DispatchProps, ArgProps>

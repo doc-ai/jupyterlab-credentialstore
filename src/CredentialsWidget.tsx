@@ -38,7 +38,6 @@ const logger = ({getState}) => {
         const returnValue = next(action)
 
         //const state: string = JSON.stringify(getState());
-        //console.log('state after dispatch', state)
 
         return returnValue
     }
@@ -56,7 +55,6 @@ const store = createStore(
 
 function encrypt(msgString, token) {
     token = CryptoJS.enc.Utf8.parse(token.substring(0, 16))
-    //console.log(token)
 
     let iv = CryptoJS.lib.WordArray.random(16);
     let encrypted = CryptoJS.AES.encrypt(msgString, token, {
@@ -66,9 +64,7 @@ function encrypt(msgString, token) {
 }
 
 function decrypt(ciphertextStr, token) {
-    //console.log(token.substring(0,16))
     token = CryptoJS.enc.Utf8.parse(token.substring(0, 16))
-    //console.log(token)
 
     let ciphertext = CryptoJS.enc.Base64.parse(ciphertextStr);
 
@@ -87,8 +83,7 @@ function decrypt(ciphertextStr, token) {
 }
 
 const pyWriteFile = (session, token, lastId, credentials, onStoredCredentials, setToken, mainpath) => {
-    //console.log("real token: "+token);
-
+    
     let enc_credentials = credentials !== undefined ? credentials.map(c => {
         let val = encrypt(c.value, token)
         return {id: c.id, tag: c.tag, value: val, changed: c.changed};
@@ -157,10 +152,8 @@ if "token" not in json_data_to_write.keys():
 with open(PATH, 'w') as f:
     json.dump(json_data_to_write, f);
 `;
-        //console.log(code);
-
+        
         let userExpressions = {'output': 'json.dumps(json_data)'}
-
         let content: KernelMessage.IExecuteRequestMsg['content'] = {
             code: code,
             stop_on_error: true,
@@ -171,24 +164,18 @@ with open(PATH, 'w') as f:
 
 
         future.done.then(msg => {
-            //console.log(msg);
-
             //try {
             let raw_data = msg['content']['user_expressions']['output']['data']['text/plain'];
 
-            //console.log(raw_data);
             let data = JSON.parse(
                 raw_data.replace(/^\'+|\'+$/g, '')
             );
 
-            //console.log("set token: "+data.token);
             setToken(data.token);
 
             if (onStoredCredentials !== undefined && token !== undefined) {
                 let dec_credentials = data.credentials.map(c => {
                     let val = decrypt(c.value, token);
-
-                    //console.log(val);
 
                     return {
                         id: c.id,
@@ -200,16 +187,11 @@ with open(PATH, 'w') as f:
 
                 onStoredCredentials(data.lastId, dec_credentials);
             }
-
-
             /*  
             } catch (err) {
-                //console.log("Error while loading user expression result");
             }*/
-
         });
     }
-
 }
 
 export class CredentialsWidget extends Widget {
@@ -336,10 +318,7 @@ def get_credential(tag):
 
 """)
 `
-            //console.log(code);
-
             let userExpressions = {'output': 'os.getcwd()'}
-
             let content: KernelMessage.IExecuteRequestMsg['content'] = {
                 code: code,
                 stop_on_error: true,
@@ -348,18 +327,12 @@ def get_credential(tag):
 
             let future = this.clientSession.session.kernel.requestExecute(content, false, {});
 
-
             future.done.then(msg => {
-                //console.log(msg);
-
                 this.mainpath = msg['content']['user_expressions']['output']['data']['text/plain'];
-
                 this.clientSession.shutdown();
                 this.clientSession = undefined;
             });
-
         });
-
     }
 
     setCredentialListGetter(getCredentialList: () => Array<ICredential>) {
@@ -387,7 +360,6 @@ def get_credential(tag):
     }
 
     onTokenSet(token: string) {
-        //console.log("onTokenSet");
         this.unencrypted_token = token;
         this.load(token);
         this.render(() => {
@@ -406,8 +378,6 @@ def get_credential(tag):
 
         this.stop();
 
-        //console.log("login");
-
         this.clientSession = new SessionContext({
             sessionManager: this.serviceManager.sessions,
             specsManager: this.serviceManager.kernelspecs,
@@ -421,9 +391,7 @@ def get_credential(tag):
 
         this.clientSession.initialize().then(() => {
             this.load(this.unencrypted_token);
-
         });
-
     }
 
     load(token: string) {
@@ -439,13 +407,9 @@ def get_credential(tag):
             this.setToken,
             this.mainpath
         );
-
-
     }
 
     stop() {
-
-        //console.log("stop");
         this.unencrypted_token = undefined;
         this.token = undefined;
 
@@ -456,13 +420,12 @@ def get_credential(tag):
             this.clientSession = undefined;
 
             this.render(() => {
-                ;
+                //;
             });
         }
     }
 
     save() {
-        //console.log("save");
         pyWriteFile(
             this.clientSession,
             this.unencrypted_token,
@@ -474,16 +437,13 @@ def get_credential(tag):
         );
 
         this.onSaved();
-
     }
 
     removeCredential(tag: string) {
-        //console.log("remove: "+tag);
-
+        
         if (this.clientSession !== undefined) {
             let kernel_id = this.clientSession.session.kernel.id;
             let code = `exec("%s = None" % ("` + tag + `"))`;
-            //console.log(code);
             let content: KernelMessage.IExecuteRequestMsg['content'] = {
                 code: code,
                 stop_on_error: true
@@ -491,14 +451,13 @@ def get_credential(tag):
 
             let future = this.clientSession.session.kernel.requestExecute(content, false, {});
             future.done.then(msg => {
-                //console.log(msg);
+                //
             });
         }
     }
 
 
     protected onAfterShow(msg: Message): void {
-        //console.log("after show")
         new Promise<void>((resolve, reject) => {
             this.render(() => {
                 resolve()
@@ -531,8 +490,6 @@ def get_credential(tag):
             onRendered
         );
     }
-
-
 }
 
 

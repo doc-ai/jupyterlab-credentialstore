@@ -40,9 +40,6 @@ type Props = StateProps & DispatchProps & ArgProps
 
 const PasswordSelector: React.FC<Props> = (props) => {
 
-    //console.log("PasswordSelector");
-    //console.log(props.argToken);
-
     return props.argToken === undefined ? <div className="jp-Frame">
         <h2>Set a password</h2>
         <table className="jp-PasswordTable">
@@ -122,8 +119,6 @@ const PasswordSelector: React.FC<Props> = (props) => {
             }
             </tbody>
         </table>
-
-
     </div>
 
 }
@@ -148,7 +143,6 @@ function mapDispatchToProps(dispatch: Redux.Dispatch<Action<any>>, ownProps: Arg
             dispatch(setActiveToken(token))
         },
     }
-
 }
 
 export default connect<StateProps, DispatchProps, ArgProps>

@@ -22,11 +22,7 @@ const plugin: JupyterFrontEndPlugin<void> = {
     activate: (app: JupyterFrontEnd,
                restorer: ILayoutRestorer) => {
 
-        //console.log('JupyterLab extension CredentialStore is activated!');
-        //console.log("VERSION__"+version);
-
         const {shell} = app;
-
         const panel = new CredentialsPanel({
             id: 'credentialstore',
             serviceManager: app.serviceManager
@@ -36,7 +32,6 @@ const plugin: JupyterFrontEndPlugin<void> = {
         panel.title.iconClass = 'jp-CredentialIcon jp-SideBar-tabIcon';
         panel.title.caption = CAPTION;
         shell.add(panel, 'left', {rank: 1000});
-
 
         return;
     }
