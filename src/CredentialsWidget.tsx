@@ -323,10 +323,9 @@ def get_credential(tag):
     km=jupyter_client.BlockingKernelClient(connection_file=cf)
     km.load_connection_file()
 
-    reply = km.get_shell_msg(km.execute(
-        "", 
-        user_expressions={'output':'pickle.dumps('+tag+')'}
-    ))
+    km.start_channels()
+    msgid = km.execute("", user_expressions={'output':'pickle.dumps('+tag+')'})
+    reply = km.get_shell_msg(timeout=5)
     #print(reply)
     try:
         output_bytes = reply['content']['user_expressions']['output']['data']['text/plain']
