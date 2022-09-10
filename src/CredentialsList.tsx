@@ -1,15 +1,9 @@
-// https://reactjs.org/docs/react-without-es6.html
-// https://levelup.gitconnected.com/ultimate-react-component-patterns-with-typescript-2-8-82990c516935
-
-import {Action} from "redux";
-
-declare var require: any
-let CryptoJS = require("crypto-js");
-
+import CryptoJS = require("crypto-js");
 
 import * as React from 'react';
 import * as Redux from 'redux'
 import {connect} from 'react-redux'
+import {Action} from "redux";
 
 import '../style/index.css';
 

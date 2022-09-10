@@ -1,12 +1,8 @@
-const version = "0414";
-
-
 import {
     JupyterFrontEnd, JupyterFrontEndPlugin, ILayoutRestorer,
 } from '@jupyterlab/application';
 
 import {CredentialsPanel} from './CredentialsPanel'
-
 
 import '../style/index.css';
 

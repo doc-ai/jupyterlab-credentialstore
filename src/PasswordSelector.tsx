@@ -1,22 +1,13 @@
-import {Action} from "redux";
-
-declare var require: any
-let CryptoJS = require("crypto-js");
+import CryptoJS = require("crypto-js");
 
 import * as React from 'react';
 import * as Redux from 'redux'
+import {Action} from 'redux'
 import {connect} from 'react-redux'
 
 import '../style/index.css';
 
-import {
-    setTokenA,
-    setTokenB,
-    getTokenA,
-    getTokenB,
-    getActiveToken,
-    setActiveToken
-} from './ducks/token'
+import {getActiveToken, getTokenA, getTokenB, setActiveToken, setTokenA, setTokenB} from './ducks/token'
 
 interface StateProps {
     tokenA: string,
@@ -50,9 +41,11 @@ const PasswordSelector: React.FC<Props> = (props) => {
                     <input className="jp-Input"
                            type="password"
                            onChange={(event) => {
-                               props.setTokenA(CryptoJS.SHA256(
-                                   event.target.value
-                               ));
+                               props.setTokenA(
+                                   CryptoJS.SHA256(
+                                       event.target.value
+                                   ).toString(CryptoJS.enc.Base64)
+                               );
                            }}
                     />
                 </td>
@@ -63,7 +56,11 @@ const PasswordSelector: React.FC<Props> = (props) => {
                     <input className="jp-Input"
                            type="password"
                            onChange={(event) => {
-                               props.setTokenB(CryptoJS.SHA256(event.target.value));
+                               props.setTokenB(
+                                   CryptoJS.SHA256(
+                                       event.target.value
+                                   ).toString(CryptoJS.enc.Base64)
+                               );
                            }}
                     />
                 </td>
@@ -95,9 +92,11 @@ const PasswordSelector: React.FC<Props> = (props) => {
                     <input className="jp-Input"
                            type="password"
                            onChange={(event) => {
-                               props.setTokenA(CryptoJS.SHA256(
-                                   event.target.value
-                               ));
+                               props.setTokenA(
+                                   CryptoJS.SHA256(
+                                       event.target.value
+                                   ).toString(CryptoJS.enc.Base64)
+                               );
                            }}
                     />
                 </td>

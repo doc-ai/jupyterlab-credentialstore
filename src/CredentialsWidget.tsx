@@ -1,32 +1,22 @@
-declare var require: any
-let CryptoJS = require("crypto-js");
+import CryptoJS = require("crypto-js");
 
-import {
-    Widget
-} from '@lumino/widgets';
-
+import {Widget} from '@lumino/widgets';
 import {Message} from '@lumino/messaging';
-import {ServiceManager} from '@jupyterlab/services';
-import {SessionContext, ISessionContext} from '@jupyterlab/apputils';
-import {Kernel, KernelMessage} from '@jupyterlab/services';
+import {KernelMessage, ServiceManager} from '@jupyterlab/services';
+import {ISessionContext, SessionContext} from '@jupyterlab/apputils';
 
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
-import {createStore, combineReducers, compose, applyMiddleware} from 'redux';
+import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
 
 import CredentialsList from './CredentialsList'
 
-import {
-    ICredential
-} from './ducks/credentials'
-
-import credentialsReducer from './ducks/credentials'
+import credentialsReducer, {ICredential} from './ducks/credentials'
 import tokenReducer from './ducks/token'
 
-// TODO: this should be connected to the Jupyter-Model / Data
 const json = "";
-const data = json != null && json.length > 0 ? JSON.parse(json) : {};
+const data = json.length > 0 ? JSON.parse(json) : {};
 
 const rootReducer = combineReducers({
     credentialsReducer,
@@ -35,11 +25,9 @@ const rootReducer = combineReducers({
 
 const logger = ({getState}) => {
     return next => action => {
-        const returnValue = next(action)
-
         //const state: string = JSON.stringify(getState());
 
-        return returnValue
+        return next(action)
     }
 }
 
@@ -76,7 +64,12 @@ function decrypt(ciphertextStr, token) {
     ciphertext.sigBytes -= 16;
 
     // decryption
-    let decrypted = CryptoJS.AES.decrypt({ciphertext: ciphertext}, token, {
+    // extract ciphertext from json object, and create cipher params object
+    let cipherParams = CryptoJS.lib.CipherParams.create({
+        ciphertext: ciphertext
+    });
+
+    let decrypted = CryptoJS.AES.decrypt(cipherParams, token, {
         iv: iv
     });
     return decrypted.toString(CryptoJS.enc.Utf8);
