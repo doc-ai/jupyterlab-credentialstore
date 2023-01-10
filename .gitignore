@@ -23,3 +23,5 @@ __pycache__/
 /jupyterlab_credentialstore.egg-info/
 /venv/
 /jupyterlab_credentialstore/labextension/
+/.auth
+/Untitled.ipynb
