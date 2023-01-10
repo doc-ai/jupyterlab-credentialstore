@@ -1,20 +1,30 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "incremental": true,
     "noImplicitAny": false,
     "jsx": "react",
     "allowJs": true,
     "target": "es6",
-    "lib": ["ES6", "DOM"],
+    "lib": [
+      "es6",
+      "dom",
+      "es2020",
+      "esnext"
+    ],
     "experimentalDecorators": true,
     "noUnusedLocals": false,
     "module": "commonjs",
     "moduleResolution": "node",
     "noEmitOnError": true,
-    "outDir": "./lib",
+    "preserveWatchOutput": true,
+    "resolveJsonModule": true,
+    "outDir": "lib",
+    "rootDir": "src",
     "strict": true,
     "strictNullChecks": false,
-    "types": [],
-    "allowSyntheticDefaultImports": true
+    "types": ["jest"],
   },
-  "include": ["src/*"]
+  "include": ["src/**/*"]
 }

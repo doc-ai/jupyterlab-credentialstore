@@ -1,123 +1,78 @@
-import {
-    PanelLayout, Widget
-} from '@lumino/widgets';
+import { PanelLayout, Widget } from '@lumino/widgets';
 
-import {
-    Toolbar, ToolbarButton
-} from '@jupyterlab/apputils';
+import { Toolbar, ToolbarButton } from '@jupyterlab/apputils';
 
-import {ServiceManager} from '@jupyterlab/services';
-import {CredentialsWidget} from './CredentialsWidget'
+import { ServiceManager } from '@jupyterlab/services';
+import { CredentialsWidget } from './CredentialsWidget';
 
 // The class name added to the extension, this class ensures the background to be white
 const CLASS_NAME = 'jp-FileBrowser';
 
 export class CredentialsPanel extends Widget {
+  private toolbar: Toolbar<Widget>;
+  readonly serviceManager: ServiceManager;
+  readonly id: string;
+  public onAddCredential: () => void;
+  public onSave: () => void;
 
-    private div: HTMLElement;
-    private toolbar: Toolbar<Widget>;
-    readonly serviceManager: ServiceManager;
-    readonly id: string;
-    public onAddCredential: () => void;
-    public onSave: () => void;
-    public onLogin: () => void;
-    public onStop: () => void;
+  constructor(options: CredentialsPanel.IOptions) {
+    super();
 
-    constructor(options: CredentialsPanel.IOptions) {
-        super();
+    this.serviceManager = options.serviceManager;
+    this.id = options.id;
 
-        this.serviceManager = options.serviceManager;
-        this.id = options.id;
+    this.addClass(CLASS_NAME);
 
-        this.addClass(CLASS_NAME);
+    this.setSaveListener = this.setSaveListener.bind(this);
+    const saveButton = new ToolbarButton({
+      iconClass: 'jp-SaveIcon jp-Icon jp-Icon-16',
+      tooltip: 'Save',
+      onClick: () => this.onSave()
+    });
 
-        this.toolbar = new Toolbar<Widget>();
+    this.setAddCredentialListener = this.setAddCredentialListener.bind(this);
+    const newCredential = new ToolbarButton({
+      iconClass: 'jp-AddIcon jp-Icon jp-Icon-16',
+      tooltip: 'New Credential',
+      onClick: () => this.onAddCredential()
+    });
 
-        this.setSaveListener = this.setSaveListener.bind(this);
-        let saveButton = new ToolbarButton({
-            iconClass: 'jp-SaveIcon jp-Icon jp-Icon-16',
-            tooltip: 'Save',
-            onClick: () => this.onSave()
-        });
+    const layout = new PanelLayout();
 
+    this.toolbar = new Toolbar<Widget>();
+    this.toolbar.addItem('newCredential', newCredential);
+    this.toolbar.addItem('saveButton', saveButton);
+    layout.insertWidget(0, this.toolbar);
 
-        this.setAddCredentialListener = this.setAddCredentialListener.bind(this);
-        let newCredential = new ToolbarButton({
-            iconClass: 'jp-AddIcon jp-Icon jp-Icon-16',
-            tooltip: 'New Credential',
-            onClick: () => this.onAddCredential()
-        });
+    layout.addWidget(this.toolbar);
 
+    layout.addWidget(
+      new CredentialsWidget({
+        serviceManager: options.serviceManager,
+        setSaveListener: this.setSaveListener,
+        setAddCredentialListener: this.setAddCredentialListener
+      })
+    );
 
-        this.setLoginListener = this.setLoginListener.bind(this);
-        let loginButton = new ToolbarButton({
-            iconClass: 'jp-KeyIcon jp-Icon jp-Icon-16',
-            tooltip: 'Login',
-            onClick: () => {
-                this.onLogin();
-                this.layout.removeWidget(this.toolbar);
-                this.toolbar = new Toolbar<Widget>();
-                this.toolbar.addItem('stopButton', stopButton);
-                this.toolbar.addItem('newCredential', newCredential);
-                this.toolbar.addItem('saveButton', saveButton);
-                layout.insertWidget(0, this.toolbar);
-            }
-        });
-        this.toolbar.addItem('loginButton', loginButton);
+    this.layout = layout;
+  }
 
-        this.setStopListener = this.setStopListener.bind(this);
-        let stopButton = new ToolbarButton({
-            iconClass: 'jp-StopIcon jp-Icon jp-Icon-16',
-            tooltip: 'Stop',
-            onClick: () => {
-                this.onStop();
-                this.layout.removeWidget(this.toolbar);
-                this.toolbar = new Toolbar<Widget>();
-                this.toolbar.addItem('loginButton', loginButton);
-                layout.insertWidget(0, this.toolbar);
-            }
-        });
+  setAddCredentialListener(onAddCredential: () => void) {
+    this.onAddCredential = onAddCredential;
+  }
 
-        let layout = new PanelLayout();
-        layout.addWidget(this.toolbar);
-
-        layout.addWidget(new CredentialsWidget({
-            serviceManager: options.serviceManager,
-            setSaveListener: this.setSaveListener,
-            setAddCredentialListener: this.setAddCredentialListener,
-            setLoginListener: this.setLoginListener,
-            setStopListener: this.setStopListener
-        }));
-
-        this.layout = layout;
-    }
-
-    setAddCredentialListener(onAddCredential: () => void) {
-        this.onAddCredential = onAddCredential;
-    }
-
-    setSaveListener(onSave: () => void) {
-        this.onSave = onSave;
-    }
-
-    setLoginListener(onLogin: () => void) {
-        this.onLogin = onLogin;
-    }
-
-    setStopListener(onStop: () => void) {
-        this.onStop = onStop;
-    }
+  setSaveListener(onSave: () => void) {
+    this.onSave = onSave;
+  }
 }
 
 // The namespace for the `CredentialsPanel` class statics.
 export namespace CredentialsPanel {
+  export interface IOptions {
+    // The widget/DOM id of the credential-panel.
+    id: string;
 
-    export interface IOptions {
-        // The widget/DOM id of the credential-panel.
-        id: string;
-
-        // provides access to service, like sessions
-        serviceManager: ServiceManager;
-    }
+    // provides access to service, like sessions
+    serviceManager: ServiceManager;
+  }
 }
-

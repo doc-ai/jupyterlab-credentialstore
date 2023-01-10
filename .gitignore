@@ -20,3 +20,6 @@ __pycache__/
 *.class
 /package-lock.json
 /yarn.lock
+/jupyterlab_credentialstore.egg-info/
+/venv/
+/jupyterlab_credentialstore/labextension/

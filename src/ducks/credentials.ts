@@ -1,106 +1,115 @@
-import {getRoot} from './rootselector'
-import {createSelector} from 'reselect'
+import { getRoot } from './rootselector';
+import { createSelector } from 'reselect';
 
 export interface ICredential {
-    id: string,
-    tag: string,
-    value: string,
-    changed: boolean
+  id: string;
+  tag: string;
+  value: string;
+  changed: boolean;
 }
 
 // Actions
 export function setCredential(id, tag, value, changed) {
-    return {
-        type: 'credential/set',
-        payload: {id: id, tag: tag, value: value, changed: changed}
-    }
+  return {
+    type: 'credential/set',
+    payload: { id: id, tag: tag, value: value, changed: changed }
+  };
 }
 
 export function addCredential() {
-    return {
-        type: 'credential/create',
-        payload: undefined
-    }
+  return {
+    type: 'credential/create',
+    payload: undefined
+  };
 }
 
 export function removeCredential(id) {
-    return {
-        type: 'credential/destroy',
-        payload: id
-    }
+  return {
+    type: 'credential/destroy',
+    payload: id
+  };
 }
 
 export function setLastId(lastId) {
-    return {
-        type: 'lastid/set',
-        payload: lastId
-    }
+  return {
+    type: 'lastid/set',
+    payload: lastId
+  };
 }
 
 // the variable name must match the name of the reducer!!!
 // returns the dict that contains the data of this reducer
 export const getCredentialsRoot: any = createSelector(
-    getRoot,
-    ({credentialsReducer}) => credentialsReducer
-)
-
+  getRoot,
+  ({ credentialsReducer }) => credentialsReducer
+);
 
 export const getCredentials: any = createSelector(
-    getCredentialsRoot,
-    ({credentials}) => credentials
-)
+  getCredentialsRoot,
+  ({ credentials }) => credentials
+);
 
 export const getLastId: any = createSelector(
-    getCredentialsRoot,
-    ({lastId}) => lastId
-)
-
+  getCredentialsRoot,
+  ({ lastId }) => lastId
+);
 
 // Reducer
 const defaultState = {
-    lastId: 0,
-    credentials: []
-}
+  lastId: 0,
+  credentials: []
+};
 
 function pad(num, size) {
-    let s = num + "";
-    while (s.length < size) s = "0" + s;
-    return s;
+  let s = num + '';
+  while (s.length < size) {
+    s = '0' + s;
+  }
+  return s;
 }
 
-export default function credentialsReducer(state = defaultState, {type, payload}) {
+export default function credentialsReducer(
+  state = defaultState,
+  { type, payload }
+) {
+  switch (type) {
+    case 'credential/destroy':
+      return {
+        ...state,
+        credentials: state.credentials.filter(c => c.id !== payload)
+      };
 
-    switch (type) {
-        case 'credential/destroy':
-            return {
-                ...state,
-                credentials: state.credentials.filter(c => c.id !== payload)
-            };
+    case 'credential/create':
+      let { lastId } = state;
+      lastId = lastId + 1;
 
-        case 'credential/create':
-            let {lastId} = state;
-            lastId = lastId + 1;
+      return {
+        ...state,
+        lastId,
+        credentials: [
+          ...state.credentials,
+          {
+            id: 'id_' + pad(lastId, 6),
+            tag: undefined,
+            value: undefined,
+            changed: true
+          }
+        ].sort((a, b) => (a.id > b.id ? 1 : -1))
+      };
 
-            return {
-                ...state, lastId, credentials: [
-                    ...state.credentials,
-                    {id: 'id_' + pad(lastId, 6), tag: undefined, value: undefined, changed: true}
-                ].sort((a, b) => a.id > b.id ? 1 : -1)
-            };
+    case 'credential/set':
+      return {
+        ...state,
+        credentials: [
+          ...state.credentials.filter(c => c.id !== payload.id),
+          payload
+        ].sort((a, b) => (a.id > b.id ? 1 : -1))
+      };
 
-        case 'credential/set':
-            return {
-                ...state,
-                credentials: [
-                    ...state.credentials.filter(c => c.id !== payload.id),
-                    payload
-                ].sort((a, b) => a.id > b.id ? 1 : -1)
-            };
+    case 'lastid/set':
+      return { ...state, lastId: payload };
 
-        case 'lastid/set':
-            return {...state, lastId: payload}
-
-        default:
-            return state
-    }
+    default:
+      return state;
+  }
 }
