@@ -1,0 +1,23 @@
+[build-system]
+requires = [
+    "jupyter_packaging~=0.10,<2",
+    "jupyter-server~=1.11.0",
+    "toniq==1.43.0",
+    "jupyterlab~=3.1.12",
+    "ipython~=7.27.0"
+]
+build-backend = "jupyter_packaging.build_api"
+
+[tool.jupyter-packaging.options]
+skip-if-exists = ["jupyterlab_credentialstore/labextension/static/style.js"]
+ensured-targets = ["jupyterlab_credentialstore/labextension/static/style.js", "jupyterlab_credentialstore/labextension/package.json"]
+
+[tool.jupyter-packaging.builder]
+factory = "jupyter_packaging.npm_builder"
+
+[tool.jupyter-packaging.build-args]
+build_cmd = "build:prod"
+npm = ["jlpm"]
+
+[tool.check-manifest]
+ignore = ["jupyterlab_credentialstore/labextension/**", "yarn.lock", ".*", "package-lock.json"]
